@@ -31,15 +31,6 @@ signed main() {
     std::vector<jhelper::Test> tests = {
         %Tests%
     };
-    auto customTests = %ClassName%::generateTests();
-    for (auto customTest : customTests) {
-        tests.emplace_back();
-        auto& test = tests.back();
-        test.input = customTest.first;
-        test.output = customTest.second;
-        test.active = true;
-        test.has_output = true;
-    }
     bool allOK = true;
     int testID = 0;
     std::cout << std::fixed;

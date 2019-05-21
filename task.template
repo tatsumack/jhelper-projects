@@ -59,12 +59,6 @@ typedef pair<int, int> P;
 
 class %ClassName% {
 public:
-    static vector<pair<string, string>> generateTests()
-    {
-        vector<pair<string, string>> tests = {};
-        return tests;
-    }
-
     void solve(std::istream& cin, std::ostream& cout) {
 
     }

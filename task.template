@@ -59,7 +59,7 @@ typedef pair<int, int> P;
 
 class %ClassName% {
 public:
-    void solve(std::istream& in, std::ostream& out) {
+    void solve(std::istream& cin, std::ostream& cout) {
 
     }
 };

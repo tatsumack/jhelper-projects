@@ -59,6 +59,30 @@ int mul(int x, T... y) { return mul(x, mul(y...)); }
 
 int sub(int x, int y) { return add(x, mod - y); }
 
+int mod = 10;
+struct mint {
+    unsigned x; mint() : x(0) { }
+    mint(signed sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }
+    mint(signed long long sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }
+    int get() const { return (int)x; }
+    mint &operator+=(mint that) { if ((x += that.x) >= mod) x -= mod; return *this; }
+    mint &operator-=(mint that) { if ((x += mod - that.x) >= mod) x -= mod; return *this; }
+    mint &operator*=(mint that) { x = (unsigned long long)x * that.x % mod; return *this; }
+    mint &operator/=(mint that) { return *this *= that.inverse(); }
+    mint operator+(mint that) const { return mint(*this) += that; }
+    mint operator-(mint that) const { return mint(*this) -= that; }
+    mint operator*(mint that) const { return mint(*this) *= that; }
+    mint operator/(mint that) const { return mint(*this) /= that; }
+    mint inverse() const {
+        long long a = x, b = mod, u = 1, v = 0;
+        while (b) { long long t = a / b; a -= t * b; std::swap(a, b); u -= t * v; std::swap(u, v); }
+        return mint(u);
+    }
+    bool operator==(mint that) const { return x == that.x; }
+    bool operator!=(mint that) const { return x != that.x; }
+    mint operator-() const { mint t; t.x = x == 0 ? 0 : mod - x; return t; }
+};
+
 // nCr
 int fac[200005], rev[200005];
 

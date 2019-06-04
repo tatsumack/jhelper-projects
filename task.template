@@ -59,6 +59,10 @@ typedef pair<int, int> P;
 
 class %ClassName% {
 public:
+    static constexpr int kStressIterations = 0;
+    static void generateTest(std::ostream& test) {
+    }
+
     void solve(std::istream& cin, std::ostream& cout) {
 
     }

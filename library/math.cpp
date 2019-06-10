@@ -59,7 +59,7 @@ int mul(int x, T... y) { return mul(x, mul(y...)); }
 
 int sub(int x, int y) { return add(x, mod - y); }
 
-int mod = 10;
+int mod = 1e9+7;
 struct mint {
     unsigned x; mint() : x(0) { }
     mint(signed sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }

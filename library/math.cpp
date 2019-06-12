@@ -131,10 +131,21 @@ int modinv(int a, int m) {
 typedef vector<int> Vec;
 typedef vector<Vec> Mat;
 
+
+int add(int x, int y) { return (x += y) >= mod ? x - mod : x; }
+int mul(int x, int y) { return 1LL * x * y % mod; }
+
 Vec mulMatVec(Mat a, Vec b) {
     int n = b.size();
     Vec ret(n, 0);
     REP(i, n)REP(j, n)ret[i] = add(ret[i], mul(a[i][j], b[j]));
+    return ret;
+}
+
+Vec mulVecMat(Vec a, Mat b) {
+    int n = a.size();
+    Vec ret(n, 0);
+    REP(i, n)REP(j, n) ret[i] = add(ret[i], mul(a[j], b[j][i]));
     return ret;
 }
 

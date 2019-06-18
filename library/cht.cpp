@@ -10,9 +10,9 @@ private:
 
 public:
     // コンストラクタ ( クエリが単調であった場合はflag = trueとする )
-    ConvecHullTrick(bool flagX = false, std::function<bool(T l, T r)> compFunc = [](T l, T r) {return l >= r; })
+    ConvexHullTrick(bool flagX = false, std::function<bool(T l, T r)> compFunc = [](T l, T r) {return l >= r; })
             :isMonotonicX(flagX), comp(compFunc)  {
-        lines.emplace_back(0, 0);
+        //lines.emplace_back(0, 0);
     };
 
     // 直線l1, l2, l3のうちl2が不必要であるかどうか

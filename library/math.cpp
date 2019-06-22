@@ -1,6 +1,6 @@
 
 int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
-int lcm(int a, int b) { return a * b * gcd(a, b); }
+int lcm(int a, int b) { return a * (b / gcd(a, b)); }
 
 // 素因数
 vector<int> getPrimeFactors(int a) {
@@ -45,8 +45,9 @@ int mod = 1e9 + 7;
 
 void add(int& a, int b) {
     a += b;
-    if (a >= mod) a-= mod;
+    if (a >= mod) a -= mod;
 }
+
 int add(int x, int y) { return (x += y) >= mod ? x - mod : x; }
 
 template<class... T>
@@ -59,28 +60,65 @@ int mul(int x, T... y) { return mul(x, mul(y...)); }
 
 int sub(int x, int y) { return add(x, mod - y); }
 
-int mod = 1e9+7;
+int mod = 1e9 + 7;
+
 struct mint {
-    unsigned x; mint() : x(0) { }
+    unsigned x;
+
+    mint() : x(0) {}
+
     mint(signed sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }
+
     mint(signed long long sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }
-    int get() const { return (int)x; }
-    mint &operator+=(mint that) { if ((x += that.x) >= mod) x -= mod; return *this; }
-    mint &operator-=(mint that) { if ((x += mod - that.x) >= mod) x -= mod; return *this; }
-    mint &operator*=(mint that) { x = (unsigned long long)x * that.x % mod; return *this; }
-    mint &operator/=(mint that) { return *this *= that.inverse(); }
+
+    int get() const { return (int) x; }
+
+    mint& operator+=(mint that) {
+        if ((x += that.x) >= mod) x -= mod;
+        return *this;
+    }
+
+    mint& operator-=(mint that) {
+        if ((x += mod - that.x) >= mod) x -= mod;
+        return *this;
+    }
+
+    mint& operator*=(mint that) {
+        x = (unsigned long long) x * that.x % mod;
+        return *this;
+    }
+
+    mint& operator/=(mint that) { return *this *= that.inverse(); }
+
     mint operator+(mint that) const { return mint(*this) += that; }
+
     mint operator-(mint that) const { return mint(*this) -= that; }
+
     mint operator*(mint that) const { return mint(*this) *= that; }
+
     mint operator/(mint that) const { return mint(*this) /= that; }
+
     mint inverse() const {
         long long a = x, b = mod, u = 1, v = 0;
-        while (b) { long long t = a / b; a -= t * b; std::swap(a, b); u -= t * v; std::swap(u, v); }
+        while (b) {
+            long long t = a / b;
+            a -= t * b;
+            std::swap(a, b);
+            u -= t * v;
+            std::swap(u, v);
+        }
         return mint(u);
     }
+
     bool operator==(mint that) const { return x == that.x; }
+
     bool operator!=(mint that) const { return x != that.x; }
-    mint operator-() const { mint t; t.x = x == 0 ? 0 : mod - x; return t; }
+
+    mint operator-() const {
+        mint t;
+        t.x = x == 0 ? 0 : mod - x;
+        return t;
+    }
 };
 
 // nCr
@@ -129,36 +167,45 @@ int modinv(int a, int m) {
 //　行列累乗
 
 typedef vector<int> Vec;
-typedef vector<Vec> Mat;
+typedef vector <Vec> Mat;
 
 
 int add(int x, int y) { return (x += y) >= mod ? x - mod : x; }
+
 int mul(int x, int y) { return 1LL * x * y % mod; }
 
 Vec mulMatVec(Mat a, Vec b) {
     int n = b.size();
     Vec ret(n, 0);
-    REP(i, n)REP(j, n)ret[i] = add(ret[i], mul(a[i][j], b[j]));
+    REP(i, n)
+    REP(j, n)
+    ret[i] = add(ret[i], mul(a[i][j], b[j]));
     return ret;
 }
 
 Vec mulVecMat(Vec a, Mat b) {
     int n = a.size();
     Vec ret(n, 0);
-    REP(i, n)REP(j, n) ret[i] = add(ret[i], mul(a[j], b[j][i]));
+    REP(i, n)
+    REP(j, n)
+    ret[i] = add(ret[i], mul(a[j], b[j][i]));
     return ret;
 }
 
 Mat mulMatMat(Mat a, Mat b) {
     int n = a.size();
     Mat ret(n, Vec(n, 0));
-    REP(i, n)REP(j, n)REP(k, n)ret[i][j] = add(ret[i][j], mul(a[i][k], b[k][j]));
+    REP(i, n)
+    REP(j, n)
+    REP(k, n)
+    ret[i][j] = add(ret[i][j], mul(a[i][k], b[k][j]));
     return ret;
 }
 
 Mat fastPow(Mat x, int n) {
     Mat ret(x.size(), Vec(x.size(), 0));
-    REP(i, x.size())ret[i][i] = 1;
+    REP(i, x.size())
+    ret[i][i] = 1;
     while (0 < n) {
         if ((n % 2) == 0) {
             x = mulMatMat(x, x);
@@ -171,21 +218,21 @@ Mat fastPow(Mat x, int n) {
     return ret;
 }
 
-void Gauss(vector<long long> &A) {
+void Gauss(vector<long long>& A) {
     int rank = 0;
     for (int d = 0; d < 60; ++d) {
         int pivot = -1;
-        for (int i = rank; i < (int)A.size(); ++i) {
-            if (A[i] & (1LL<<d)) {
+        for (int i = rank; i < (int) A.size(); ++i) {
+            if (A[i] & (1LL << d)) {
                 pivot = i;
                 break;
             }
         }
         if (pivot == -1) continue;
         swap(A[rank], A[pivot]);
-        for (int j = 0; j < (int)A.size(); ++j) {
+        for (int j = 0; j < (int) A.size(); ++j) {
             if (j == rank) continue;
-            if (!(A[j] & (1LL<<d))) continue;
+            if (!(A[j] & (1LL << d))) continue;
             A[j] ^= A[rank];
         }
         ++rank;

@@ -2,10 +2,16 @@ struct LCA {
     static const int MAX_V = 100100;
     static const int MAX_LOG_V = 21;
 
-    vector<int> G[MAX_V];
+    vector<vector<int>> G;
+    vector<vector<int>> parent;
+    vector<int> depth;
 
-    int parent[MAX_LOG_V][MAX_V];
-    int depth[MAX_V];
+    LCA(int size) {
+        G = vector<vector<int>>(size);
+        parent = vector<vector<int>>(MAX_LOG_V, vector<int>(size));
+        depth = vector<int>(size);
+    }
+
 
     void dfs(int v, int p, int d) {
         parent[0][v] = p;

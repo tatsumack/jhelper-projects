@@ -30,5 +30,5 @@ struct UnionFind {
         vsize[y] = vsize[x];
     }
     bool same(int x, int y) { return find(x) == find(y); }
-    int getSize(int x) { return vsize[find(x)]; }
+    int size(int x) { return vsize[find(x)]; }
 };

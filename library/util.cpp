@@ -1,1 +1,1 @@
-vs.erase(unique(vs.begin(), vs.end()), vs.end());
+v.erase(unique(v.begin(), v.end()), v.end());

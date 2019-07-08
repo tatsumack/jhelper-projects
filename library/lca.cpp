@@ -1,5 +1,4 @@
 struct LCA {
-    static const int MAX_V = 100100;
     static const int MAX_LOG_V = 21;
 
     vector<vector<int>> G;

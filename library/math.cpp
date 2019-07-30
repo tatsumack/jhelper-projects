@@ -1,5 +1,6 @@
 
 int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
+
 int lcm(int a, int b) { return a * (b / gcd(a, b)); }
 
 // 素因数
@@ -37,6 +38,20 @@ vector<int> getPrimeFactors(int a) {
     }
     if (a > 1) s.push_back(a);
     return s;
+}
+
+// 約数列挙
+vector<int> get(int n) {
+    vector<int> ret;
+    for (int i = 1; i * i <= n; ++i) {
+        if (n % i == 0) {
+            ret.push_back(i);
+            if (i != 1 && i * i != n) {
+                ret.push_back(n / i);
+            }
+        }
+    }
+    return ret;
 }
 
 

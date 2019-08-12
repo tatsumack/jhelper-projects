@@ -136,32 +136,21 @@ struct mint {
     }
 };
 
-// nCr
-int fac[200005], rev[200005];
+struct combination {
+    vector<mint> fact, ifact;
 
-int binpow(int x, int p) {
-    if (p == 0) return 1;
+    combination(int n) : fact(n + 1), ifact(n + 1) {
+        fact[0] = 1;
+        for (int i = 1; i <= n; ++i) fact[i] = fact[i - 1] * i;
+        ifact[n] = fact[n].inverse();
+        for (int i = n; i >= 1; --i) ifact[i - 1] = ifact[i] * i;
+    }
 
-    if (p % 2 == 0)
-        return binpow((x * x) % mod, p / 2);
-    else
-        return (x * binpow(x, p - 1)) % mod;
-}
-
-int nCr(int n, int r) {
-    if (r > n) return 0;
-    return ((fac[n] * rev[r]) % mod * rev[n - r]) % mod;
-}
-
-void precalc(int n) {
-    fac[0] = fac[1] = 1;
-    FOR(i, 2, n + 2)
-    fac[i] = (fac[i - 1] * i) % mod;
-
-    rev[n + 1] = binpow(fac[n + 1], mod - 2) % mod;
-    REV(i, n, 0)
-    { rev[i] = (rev[i + 1] * (i + 1)) % mod; }
-}
+    mint operator()(int n, int k) {
+        if (k < 0 || k > n) return 0;
+        return fact[n] * ifact[k] * ifact[n - k];
+    }
+};
 
 // 逆元
 int modinv(int a, int m) {

@@ -3,3 +3,4 @@ tasks/*
 output/*
 testrunner/*
 cmake-build-debug/
+.DS_Store

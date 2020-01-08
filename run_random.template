@@ -31,6 +31,11 @@ signed main() {
     std::vector<jhelper::Test> tests = {
         %Tests%
     };
+    for (int i = 0; i < %ClassName%::kStressIterations; ++i) {
+        std::ostringstream generated_test;
+        %ClassName%::generateTest(generated_test);
+        tests.push_back({generated_test.str(), "", true, false});
+    }
     bool allOK = true;
     int testID = 0;
     std::cout << std::fixed;
@@ -39,32 +44,26 @@ signed main() {
     for(const jhelper::Test& test: tests ) {
         std::cout << "\033[4m" << "Test #" << ++testID << "\033[m" << std::endl;
         std::cout << "Input: \n" << test.input << std::endl;
-        if (test.has_output) {
-            std::cout << "Expected output: \n" << test.output << std::endl;
-        }
-        else {
-            std::cout << "Expected output: \n" << "N/A" << std::endl;
-        }
         if (test.active) {
-            std::stringstream in(test.input);
-            std::ostringstream out;
+            std::stringstream in(test.input), in2(test.input);
+            std::ostringstream out, out2;
             std::clock_t start = std::clock();
             %ClassName% solver;
             %SolverCall%
             std::clock_t finish = std::clock();
             double currentTime = double(finish - start) / CLOCKS_PER_SEC;
             maxTime = std::max(currentTime, maxTime);
+            solver.validate(in2, out2);
             std::cout << "Actual output: \n" << out.str() << std::endl;
-            if (test.has_output) {
-                bool result = jhelper::check(test.output, out.str());
-                allOK = allOK && result;
+            std::cout << "Expected output: \n" << out2.str() << std::endl;
+            bool result = jhelper::check(out.str(), out2.str());
+            allOK = allOK && result;
 
-                if (result) {
-                    std::cout << "Result: " << "\033[32m OK \033[m" << std::endl;
-                }
-                else {
-                    std::cout << "Result: " << "\033[31m WA \033[m" << std::endl;
-                }
+            if (result) {
+                std::cout << "Result: " << "\033[32m OK \033[m" << std::endl;
+            }
+            else {
+                std::cout << "Result: " << "\033[31m WA \033[m" << std::endl;
             }
             std::cout << "Time: " << currentTime << std::endl;
         }
@@ -72,9 +71,7 @@ signed main() {
             std::cout << "SKIPPED\n";
         }
 
-
         std::cout << std::endl;
-
     }
     if(allOK) {
         std::cout << "\033[32m" << "All OK" << "\033[m"<< std::endl;

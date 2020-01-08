@@ -59,13 +59,14 @@ signed main() {
             bool result = jhelper::check(out.str(), out2.str());
             allOK = allOK && result;
 
+            std::cout << "Time: " << currentTime << std::endl;
             if (result) {
                 std::cout << "Result: " << "\033[32m OK \033[m" << std::endl;
             }
             else {
-                std::cout << "Result: " << "\033[31m WA \033[m" << std::endl;
+                std::cout << "\033[31m" << "Found a failed case!!" << "\033[m"<< std::endl;
+                return;
             }
-            std::cout << "Time: " << currentTime << std::endl;
         }
         else {
             std::cout << "SKIPPED\n";

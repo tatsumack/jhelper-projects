@@ -54,27 +54,7 @@ vector<int> get(int n) {
     return ret;
 }
 
-
 // mod
-int mod = 1e9 + 7;
-
-void add(int& a, int b) {
-    a += b;
-    if (a >= mod) a -= mod;
-}
-
-int add(int x, int y) { return (x += y) >= mod ? x - mod : x; }
-
-template<class... T>
-int add(int x, T... y) { return add(x, add(y...)); }
-
-int mul(int x, int y) { return 1LL * x * y % mod; }
-
-template<class... T>
-int mul(int x, T... y) { return mul(x, mul(y...)); }
-
-int sub(int x, int y) { return add(x, mod - y); }
-
 int mod = 1e9 + 7;
 
 struct mint {

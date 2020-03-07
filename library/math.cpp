@@ -222,3 +222,29 @@ void Gauss(vector<long long>& A) {
         ++rank;
     }
 }
+
+// bit操作系
+int bitcount(int n) {
+    int cnt = 0;
+    REP(i, N) {
+        if (n >> i & 1) cnt++;
+    }
+    return cnt;
+}
+
+int erase(int n, int i) {
+    int up = n;
+    up = up >> (i + 1);
+    up = up << i;
+    int low = n & ((1 << i) - 1);
+    return up | low;
+}
+
+int push(int n, int v, int i) {
+    int up = n;
+    up = up >> i;
+    up = up << (i + 1);
+    int low = n & ((1 << i) - 1);
+    return up | low | (v << i);
+}
+

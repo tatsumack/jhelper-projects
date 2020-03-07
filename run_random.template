@@ -65,7 +65,7 @@ signed main() {
             }
             else {
                 std::cout << "\033[31m" << "Found a failed case!!" << "\033[m"<< std::endl;
-                return;
+                return 0;
             }
         }
         else {

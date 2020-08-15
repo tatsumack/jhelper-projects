@@ -148,6 +148,15 @@ struct permutation {
     }
 };
 
+int binpow(int x, int p) {
+    if (p == 0) return 1;
+
+    if (p % 2 == 0)
+        return binpow((x * x) % mod, p / 2);
+    else
+        return (x * binpow(x, p - 1)) % mod;
+}
+
 // 逆元
 int modinv(int a, int m) {
     int b = m, u = 1, v = 0;

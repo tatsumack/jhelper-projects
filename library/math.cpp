@@ -54,67 +54,104 @@ vector<int> get(int n) {
     return ret;
 }
 
+// 高速素因数分解
+template<typename T>
+vector<T> smallest_prime_factors(T n) {
+    vector<T> spf(n + 1);
+    for (int i = 0; i <= n; i++) spf[i] = i;
+    for (T i = 2; i * i <= n; i++) {
+        if (spf[i] == i) {
+            for (T j = i * i; j <= n; j += i) {
+                if (spf[j] == j) {
+                    spf[j] = i;
+                }
+            }
+        }
+    }
+
+    return spf;
+}
+
+template<typename T>
+set<T> factolization(T x, vector<T>& spf) {
+    set<T> ret;
+    while (x != 1) {
+        ret.insert(spf[x]);
+        x /= spf[x];
+    }
+    return ret;
+}
+
+
 // mod
-int mod = 1e9 + 7;
+const int mod = 998244353;
 
 struct mint {
-    unsigned x;
+    int x;
 
     mint() : x(0) {}
 
-    mint(signed sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }
+    mint(int x) : x((x % mod + mod) % mod) {}
 
-    mint(signed long long sig) { x = sig < 0 ? sig % mod + mod : sig % mod; }
-
-    int get() const { return (int) x; }
-
-    mint& operator+=(mint that) {
-        if ((x += that.x) >= mod) x -= mod;
+    // mint(ll x):x(x){}
+    mint& fix() {
+        x = (x % mod + mod) % mod;
         return *this;
     }
 
-    mint& operator-=(mint that) {
-        if ((x += mod - that.x) >= mod) x -= mod;
+    mint operator-() const { return mint(0) - *this; }
+
+    mint operator~() const { return mint(1) / *this; }
+
+    mint& operator+=(const mint& a) {
+        if ((x += a.x) >= mod) x -= mod;
         return *this;
     }
 
-    mint& operator*=(mint that) {
-        x = (unsigned long long) x * that.x % mod;
+    mint& operator-=(const mint& a) {
+        if ((x += mod - a.x) >= mod) x -= mod;
         return *this;
     }
 
-    mint& operator/=(mint that) { return *this *= that.inverse(); }
-
-    mint operator+(mint that) const { return mint(*this) += that; }
-
-    mint operator-(mint that) const { return mint(*this) -= that; }
-
-    mint operator*(mint that) const { return mint(*this) *= that; }
-
-    mint operator/(mint that) const { return mint(*this) /= that; }
-
-    mint inverse() const {
-        long long a = x, b = mod, u = 1, v = 0;
-        while (b) {
-            long long t = a / b;
-            a -= t * b;
-            std::swap(a, b);
-            u -= t * v;
-            std::swap(u, v);
-        }
-        return mint(u);
+    mint& operator*=(const mint& a) {
+        (x *= a.x) %= mod;
+        return *this;
     }
 
-    bool operator==(mint that) const { return x == that.x; }
-
-    bool operator!=(mint that) const { return x != that.x; }
-
-    mint operator-() const {
-        mint t;
-        t.x = x == 0 ? 0 : mod - x;
-        return t;
+    mint& operator/=(const mint& a) {
+        (x *= a.pow(mod - 2).x) %= mod;
+        return *this;
     }
+
+    mint operator+(const mint& a) const { return mint(*this) += a; }
+
+    mint operator-(const mint& a) const { return mint(*this) -= a; }
+
+    mint operator*(const mint& a) const { return mint(*this) *= a; }
+
+    mint operator/(const mint& a) const { return mint(*this) /= a; }
+
+    mint pow(int t) const {
+        if (!t) return 1;
+        mint res = pow(t / 2);
+        res *= res;
+        return (t & 1) ? res * x : res;
+    }
+
+    bool operator<(const mint& a) const { return x < a.x; }
+
+    bool operator==(const mint& a) const { return x == a.x; }
 };
+
+istream& operator>>(istream& i, mint& a) {
+    i >> a.x;
+    return i;
+}
+
+ostream& operator<<(ostream& o, const mint& a) {
+    o << a.x;
+    return o;
+}
 
 struct combination {
     vector<mint> fact, ifact;

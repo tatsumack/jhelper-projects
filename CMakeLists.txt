@@ -9,3 +9,5 @@ file(GLOB_RECURSE HEADERS "library/*.hpp" )
 ADD_DEFINITIONS(-std=c++17)
 
 add_executable(test ${TASKS} ${HEADERS})
+
+include_directories(./ac-library/)

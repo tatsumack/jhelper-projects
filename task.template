@@ -11,8 +11,6 @@
 
 using namespace std;
 
-typedef pair<int, int> P;
-
 class %ClassName% {
 public:
     void solve(std::istream& cin, std::ostream& cout) {
